@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>肠胃顺食助手 - 避开胀气食物</title>
+    <title>肠胃饮食助手</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
@@ -14,114 +13,83 @@
                         safe: '#10b981',
                         warn: '#f59e0b',
                         bad: '#ef4444',
-                        main: '#8b5cf6'
+                        main: '#3b82f6',
                     }
                 }
             }
         }
     </script>
     <style>
-        body{background:#f9fafb;}
+        body {
+            background-color: #f8fafc;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .loading {
+            animation: fade 1.2s infinite;
+        }
+        @keyframes fade {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
     </style>
 </head>
-<body class="pb-24">
-<header class="bg-main text-white py-5 px-4">
-    <h1 class="text-xl font-bold">肠胃顺食助手</h1>
-    <p class="text-sm opacity-90 mt-1">查询胀气食物 · 科学饮食不腹胀</p >
-</header>
+<body class="min-h-screen p-6">
+    <div class="max-w-md mx-auto">
+        <!-- 标题 -->
+        <h1 class="text-3xl font-bold text-gray-800 text-center mb-2">
+            肠胃饮食助手
+        </h1>
+        <p class="text-gray-500 text-center mb-10">
+            输入食物，AI帮你判断胀气风险
+        </p >
 
-<div class="p-4">
-    <div class="bg-white rounded-full flex px-4 py-3 shadow">
-        <i class="fa-solid fa-search text-gray-400 mt-1"></i>
-        <input id="foodText" class="flex-1 ml-2 outline-none text-sm" placeholder="输入食物/菜品查询">
-        <button onclick="searchFood()" class="bg-main text-white px-4 py-1 rounded-full text-sm">查询</button>
-    </div>
-
-    <div id="resBox" class="mt-4 bg-white rounded-xl p-4 shadow hidden"></div>
-
-    <div class="grid grid-cols-3 gap-3 mt-6">
-        <div onclick="showSafeList()" class="bg-safe/10 border border-safe rounded-xl p-3 text-center">
-            <i class="fa-solid fa-check text-safe text-xl"></i>
-            <p class="text-sm mt-1 text-safe">安全食物</p >
+        <!-- 搜索框 -->
+        <div class="bg-white rounded-xl shadow-sm p-3 mb-6">
+            <input 
+                id="foodInput" 
+                class="w-full text-lg p-2 outline-none border-b border-gray-100" 
+                placeholder="输入食物/外卖菜品"
+            >
+            <button 
+                onclick="aiCheck()" 
+                class="w-full mt-3 bg-main text-white py-3 rounded-lg text-lg font-medium"
+            >
+                查询
+            </button>
         </div>
-        <div onclick="showMidList()" class="bg-warn/10 border border-warn rounded-xl p-3 text-center">
-            <i class="fa-solid fa-circle-exclamation text-warn text-xl"></i>
-            <p class="text-sm mt-1 text-warn">少量慎食</p >
-        </div>
-        <div onclick="showBadList()" class="bg-bad/10 border border-bad rounded-xl p-3 text-center">
-            <i class="fa-solid fa-xmark text-bad text-xl"></i>
-            <p class="text-sm mt-1 text-bad">胀气避雷</p >
-        </div>
-    </div>
 
-    <div class="bg-white rounded-xl p-4 shadow mt-6">
-        <h3 class="font-bold text-gray-700"><i class="fa-solid fa-clock text-main mr-2"></i>三餐食用规则</h3>
-        <div class="text-sm text-gray-600 mt-3 space-y-2">
-            <p>🌞 早餐：只吃安全食物，不吃产气食物</p >
-            <p>☀️ 午餐：可少量吃慎食食物</p >
-            <p>🌙 晚餐：只吃清淡安全食物</p >
-            <p>😣 胀气难受期：严格只吃软烂养胃餐</p >
-        </div>
+        <!-- 结果区域 -->
+        <div id="resultBox" class="bg-white rounded-xl shadow-sm p-6 hidden"></div>
     </div>
-
-    <div class="bg-white rounded-xl p-4 shadow mt-6">
-        <h3 class="font-bold text-gray-700"><i class="fa-solid fa-utensils text-main mr-2"></i>日常菜品参考</h3>
-        <p class="text-safe text-sm mt-3">✅ 推荐吃：清汤面、瘦肉粥、清炒青菜、蒸山药、水煮蛋、冬瓜汤</p >
-        <p class="text-bad text-sm mt-2">❌ 少吃：韭菜炒蛋、干锅菜、豆类菜、洋葱菜、糯米食物</p >
-    </div>
-</div>
-
-<div id="popBox" class="fixed inset-0 bg-black/50 hidden z-50 flex items-end">
-    <div class="bg-white w-full rounded-t-2xl p-5 max-h-[70vh] overflow-y-auto">
-        <div class="flex justify-between items-center mb-4">
-            <h4 id="popTitle" class="font-bold text-lg"></h4>
-            <button onclick="closePop()" class="text-gray-400 text-xl">×</button>
-        </div>
-        <div id="popContent" class="flex flex-wrap gap-2 text-sm"></div>
-    </div>
-</div>
 
 <script>
-const foodLib = {
-safe:["米饭","小米粥","面条","馒头","鸡胸肉","瘦牛肉","鸡蛋","鲈鱼","鲫鱼","生菜","油麦菜","娃娃菜","冬瓜","胡萝卜","土豆","山药","银耳","莲子"],
-mid:["玉米","燕麦","花生","桃子","芒果","芹菜","番茄","橘子","莲藕","普通菌菇"],
-bad:["红薯","紫薯","芋头","洋葱","韭菜","西兰花","卷心菜","白萝卜","黄豆","豆腐","豆浆","腐竹","碳酸饮料","奶茶","甜食","糯米","年糕"]
-};
+async function aiCheck() {
+    const food = document.getElementById("foodInput").value.trim();
+    if (!food) {
+        alert("请输入食物名称");
+        return;
+    }
 
-function getFoodInfo(name){
-    if(foodLib.safe.includes(name)){
-        return {level:"✅ 安全无胀气",color:"text-safe",desc:"温和好消化，全天都能吃",time:"早中晚任意时段食用"}
-    }else if(foodLib.mid.includes(name)){
-        return {level:"⚠️ 少量慎食",color:"text-warn",desc:"吃多容易腹胀，控制分量",time:"仅午餐少量食用，早晚少吃"}
-    }else if(foodLib.bad.includes(name)){
-        return {level:"❌ 高胀气食物",color:"text-bad",desc:"极易产气，容易肚子鼓胀",time:"胀气期间禁止食用，平日尽量少吃"}
-    }else{
-        return {level:"📝 暂无收录",color:"text-gray-500",desc:"建议清淡少量尝试",time:"优先放在午餐食用"}
+    const box = document.getElementById("resultBox");
+    box.classList.remove("hidden");
+    box.innerHTML = `<p class="loading text-center text-gray-500 text-lg">分析中...</p >`;
+
+    const prompt = `你是肠胃胀气饮食专家，分析【${food}】
+请严格按以下格式回复，保持精简：
+1.胀气等级：安全/少量慎食/严禁胀气
+2.消化难度：简单/一般/困难
+3.食用建议
+4.简短提醒`;
+
+    try {
+        const res = await fetch(`https://api.52vmy.cn/api/wen/chat?msg=${encodeURIComponent(prompt)}`);
+        const data = await res.json();
+        const text = data.text.replace(/\n/g, "<br>");
+        box.innerHTML = `<div class="text-gray-700 text-base leading-relaxed">${text}</div>`;
+    } catch (e) {
+        box.innerHTML = `<p class="text-red-500 text-center">接口临时繁忙，请稍后再试</p >`;
     }
 }
-
-function searchFood(){
-    let val = document.getElementById("foodText").value.trim()
-    if(!val){alert("请输入食物名称");return;}
-    let info = getFoodInfo(val)
-    let box = document.getElementById("resBox")
-    box.classList.remove("hidden")
-    box.innerHTML = `
-    <h3 class="font-bold ${info.color} text-lg">${val} ${info.level}</h3>
-    <p class="text-sm text-gray-600 mt-2">${info.desc}</p >
-    <p class="text-sm text-gray-600 mt-2">最佳食用时间：${info.time}</p >
-    `
-}
-
-function openPop(title,arr){
-    document.getElementById("popTitle").innerText=title
-    document.getElementById("popContent").innerHTML=arr.map(i=>`<span class="bg-gray-100 px-2 py-1 rounded">${i}</span>`).join("")
-    document.getElementById("popBox").classList.remove("hidden")
-}
-function closePop(){document.getElementById("popBox").classList.add("hidden")}
-function showSafeList(){openPop("🟢 安全养胃食物",foodLib.safe)}
-function showMidList(){openPop("🟡 慎食易胀食物",foodLib.mid)}
-function showBadList(){openPop("🔴 高胀气避雷食物",foodLib.bad)}
 </script>
 </body>
 </html>
