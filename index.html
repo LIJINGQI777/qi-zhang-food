@@ -30,13 +30,6 @@
             background: rgba(255,255,255,0.88);
             backdrop-filter: blur(6px);
         }
-        .loading{
-            animation: fade 1.2s infinite;
-        }
-        @keyframes fade{
-            0%,100%{opacity:0.4;}
-            50%{opacity:1;}
-        }
     </style>
 </head>
 <body class="p-5 min-h-screen">
@@ -45,12 +38,12 @@
         <div class="text-center mt-4 mb-8">
             <i class="fa-solid fa-seedling text-mainGreen text-3xl"></i>
             <h2 class="text-2xl font-bold text-gray-700 mt-2">养胃饮食小助手</h2>
-            <p class="text-gray-500 text-sm mt-1">呵护肠胃不胀气 · 常吃食物直接查</p >
+            <p class="text-gray-500 text-sm mt-1">呵护肠胃不胀气 · 大学生友好版</p >
         </div>
 
         <!-- 搜索区域 -->
         <div class="soft-card rounded-2xl p-5 shadow-md">
-            <input id="foodName" class="w-full p-3 rounded-xl border border-green-100 outline-none text-base" placeholder="输入任意食物/外卖菜品">
+            <input id="foodName" class="w-full p-3 rounded-xl border border-green-100 outline-none text-base" placeholder="输入任意食物/外卖/食堂菜">
             <button onclick="checkFood()" class="w-full mt-4 bg-mainGreen text-white py-3 rounded-xl font-medium">
                 查询
             </button>
@@ -59,23 +52,53 @@
         <!-- 查询结果 -->
         <div id="resultBox" class="soft-card rounded-2xl p-5 mt-5 hidden"></div>
 
+        <!-- 胀气缓解小贴士（固定显示） -->
+        <div class="soft-card rounded-2xl p-5 mt-6 shadow-md">
+            <h3 class="font-bold text-gray-700 text-lg mb-3">
+                <i class="fa-solid fa-hand-holding-heart text-mainGreen mr-2"></i>胀气缓解小提示
+            </h3>
+            <ul class="text-sm text-gray-600 space-y-2">
+                <li>✅ 饭后散步10-15分钟，轻轻顺时针揉肚子帮助排气</li>
+                <li>✅ 喝一杯温热水/陈皮水/大麦茶，促进肠胃蠕动</li>
+                <li>✅ 做几个腹式呼吸或猫式伸展，放松腹部肌肉</li>
+                <li>✅ 暂时少吃高纤维、生冷食物，给肠胃休息时间</li>
+            </ul>
+        </div>
+
         <!-- 底部文案 -->
         <p class="text-center text-gray-500 text-xs mt-8">🌿 清淡饮食 · 少食多餐 · 养好脾胃</p >
     </div>
 
 <script>
-// 本地数据库（收录你常吃的所有食物）
+// 已收录大学生常吃外卖+食堂菜品
 const foodData = {
+    // 安全养胃食物（可常吃）
     good: [
-        "小米粥","白粥","清汤面","挂面","馒头","蒸山药","蒸南瓜","鸡蛋","水煮蛋",
-        "鸡胸肉","鲈鱼","冬瓜","生菜","油麦菜","娃娃菜","胡萝卜","银耳","藕粉"
+        "小米粥","白粥","大米粥","清汤面","挂面","馒头","花卷","蒸山药","蒸南瓜","蒸土豆",
+        "鸡蛋","水煮蛋","蒸蛋羹","鸡胸肉","瘦牛肉","瘦猪肉","鲈鱼","鲫鱼","龙利鱼",
+        "冬瓜","生菜","油麦菜","娃娃菜","上海青","丝瓜","西葫芦","胡萝卜","菠菜","藕粉"
     ],
+    // 慎食食物（少量/午餐吃）
     normal: [
-        "猪肘饭","茄子包","青椒鸡腿包","玉米","燕麦","苹果","桃子","葡萄","香菇"
+        // 外卖/快餐
+        "袁记云饺","饺子","云吞","馄饨","麦当劳","原味鸡","烤翅","板烧鸡腿堡","猪肘饭",
+        "茄子包","青椒鸡腿包","玉米","燕麦片","全麦面包","荞麦面",
+        // 食堂常见
+        "番茄炒蛋","土豆丝","番茄鸡蛋面","青菜面","鸡蛋面","番茄鸡蛋盖饭","土豆炖鸡块",
+        // 水果零食
+        "苹果（去皮）","桃子","葡萄","草莓","花生（少量）","腰果（少量）"
     ],
+    // 高胀气/易踩雷食物（尽量少吃）
     avoid: [
-        "板面","朱家小馆酸菜肉燥面","韭菜","洋葱","西兰花","卷心菜","豆角",
-        "豆腐","豆浆","奶茶","油炸食品","烧烤","辣椒","碳酸饮料"
+        // 你常吃的
+        "板面","朱家小馆","酸菜肉燥面","夫妻肺片","麻辣烫","冒菜","麻辣香锅",
+        // 外卖/快餐
+        "炸鸡","薯条","汉堡（油炸）","可乐","奶茶","珍珠奶茶","碳酸饮料",
+        // 食堂/家常菜
+        "韭菜炒蛋","洋葱炒肉","西兰花炒肉","卷心菜","豆角炒肉","干锅菜","回锅肉",
+        "豆腐","豆浆","油泼面","辣子鸡","宫保鸡丁（重油）","糖醋里脊","红烧排骨（重油）",
+        // 其他
+        "烧烤","油炸食品","辣条","火锅（辣锅）","螺蛳粉","酸辣粉","米粉（重辣）"
     ]
 };
 
@@ -85,7 +108,6 @@ function checkFood(){
     let box = document.getElementById("resultBox")
     box.classList.remove("hidden")
 
-    // 先查本地数据库
     let isGood = foodData.good.some(v=>food.includes(v))
     let isNormal = foodData.normal.some(v=>food.includes(v))
     let isAvoid = foodData.avoid.some(v=>food.includes(v))
@@ -93,23 +115,23 @@ function checkFood(){
     if(isGood){
         box.innerHTML = `
         <h3 class="text-safe font-bold text-lg"><i class="fa-solid fa-check mr-2"></i>适合常吃 · 养胃佳品</h3>
-        <p class="text-gray-600 mt-2 text-sm">清淡易消化，早晚都能吃，对肠胃十分友好。</p >
+        <p class="text-gray-600 mt-2 text-sm">清淡易消化，早中晚都能吃，对肠胃十分友好。</p >
         `
     }else if(isNormal){
         box.innerHTML = `
         <h3 class="text-warn font-bold text-lg"><i class="fa-solid fa-circle-exclamation mr-2"></i>适量食用 · 不宜多吃</h3>
-        <p class="text-gray-600 mt-2 text-sm">建议仅午餐少量食用，吃多容易腹胀不适。</p >
+        <p class="text-gray-600 mt-2 text-sm">建议仅午餐少量食用，吃多容易腹胀不适。吃完可以喝杯温水、散步帮助消化哦~</p >
         `
     }else if(isAvoid){
         box.innerHTML = `
         <h3 class="text-bad font-bold text-lg"><i class="fa-solid fa-xmark mr-2"></i>尽量少吃 · 容易胀气</h3>
-        <p class="text-gray-600 mt-2 text-sm">产气油腻较重，肠胃虚弱期间建议忌口。</p >
+        <p class="text-gray-600 mt-2 text-sm">产气/油腻较重，肠胃虚弱期间建议忌口。如果不小心吃了，可以试试下面的缓解方法~</p >
         `
     }else{
-        // 本地没收录，给通用建议
+        // 暂无收录时的友好提示
         box.innerHTML = `
-        <h3 class="text-gray-500 font-bold text-lg">暂无收录食材</h3>
-        <p class="text-gray-600 mt-2 text-sm">建议少量尝试，优先放在午餐食用，观察肠胃反应~</p >
+        <h3 class="text-gray-700 font-bold text-lg"><i class="fa-solid fa-leaf mr-2"></i>暂无收录的食物</h3>
+        <p class="text-gray-600 mt-2 text-sm">建议少量尝试，优先放在午餐食用，吃完观察一下肠胃反应~</p >
         `
     }
 }
