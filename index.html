@@ -3,91 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>肠胃饮食助手</title>
+    <title>养胃饮食查询助手</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        safe: '#10b981',
-                        warn: '#f59e0b',
-                        bad: '#ef4444',
-                        main: '#3b82f6',
+                        mainGreen: '#2E9E72',
+                        safe: '#2E9E72',
+                        warn: '#E6A23C',
+                        bad: '#E53E3E',
                     }
                 }
             }
         }
     </script>
     <style>
-        body {
-            background-color: #f8fafc;
-            font-family: system-ui, -apple-system, sans-serif;
+        body{
+            /* 柔和蔬菜水果温馨背景 */
+            background: #f5fbf8 url(https://img0.baidu.com/it/u=1817352239,2110202039&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500) center/cover no-repeat fixed;
+            background-blend-mode: overlay;
+            background-color: #f5fbf8;
         }
-        .loading {
-            animation: fade 1.2s infinite;
-        }
-        @keyframes fade {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
+        .soft-card{
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(6px);
         }
     </style>
 </head>
-<body class="min-h-screen p-6">
+<body class="p-5 min-h-screen">
     <div class="max-w-md mx-auto">
-        <!-- 标题 -->
-        <h1 class="text-3xl font-bold text-gray-800 text-center mb-2">
-            肠胃饮食助手
-        </h1>
-        <p class="text-gray-500 text-center mb-10">
-            输入食物，AI帮你判断胀气风险
-        </p >
+        <!-- 顶部标题 -->
+        <div class="text-center mt-4 mb-8">
+            <i class="fa-solid fa-seedling text-mainGreen text-3xl"></i>
+            <h2 class="text-2xl font-bold text-gray-700 mt-2">养胃饮食小助手</h2>
+            <p class="text-gray-500 text-sm mt-1">温和饮食，呵护肠胃</p >
+        </div>
 
-        <!-- 搜索框 -->
-        <div class="bg-white rounded-xl shadow-sm p-3 mb-6">
-            <input 
-                id="foodInput" 
-                class="w-full text-lg p-2 outline-none border-b border-gray-100" 
-                placeholder="输入食物/外卖菜品"
-            >
-            <button 
-                onclick="aiCheck()" 
-                class="w-full mt-3 bg-main text-white py-3 rounded-lg text-lg font-medium"
-            >
-                查询
+        <!-- 搜索区域 -->
+        <div class="soft-card rounded-2xl p-5 shadow-md">
+            <input id="foodName" class="w-full p-3 rounded-xl border border-green-100 outline-none text-base" placeholder="输入食物：板面、猪肘饭、包子等">
+            <button onclick="searchFood()" class="w-full mt-4 bg-mainGreen text-white py-3 rounded-xl font-medium">
+                立即查询
             </button>
         </div>
 
-        <!-- 结果区域 -->
-        <div id="resultBox" class="bg-white rounded-xl shadow-sm p-6 hidden"></div>
+        <!-- 查询结果 -->
+        <div id="resultBox" class="soft-card rounded-2xl p-5 mt-5 hidden"></div>
+
+        <!-- 底部文案 -->
+        <p class="text-center text-gray-500 text-xs mt-8">🌿 清淡饮食 · 少食多餐 · 养好脾胃</p >
     </div>
 
 <script>
-async function aiCheck() {
-    const food = document.getElementById("foodInput").value.trim();
-    if (!food) {
-        alert("请输入食物名称");
-        return;
-    }
+// 完整食物库（你要的全部录入）
+const foodData = {
+    good: [
+        "小米粥","白粥","清汤面","挂面","馒头","蒸山药","蒸南瓜","鸡蛋","水煮蛋",
+        "鸡胸肉","鲈鱼","冬瓜","生菜","油麦菜","娃娃菜","胡萝卜","银耳","藕粉"
+    ],
+    normal: [
+        "猪肘饭","茄子包","青椒鸡腿包","玉米","燕麦","苹果","桃子","葡萄","香菇"
+    ],
+    avoid: [
+        "板面","朱家小馆酸菜肉燥面","韭菜","洋葱","西兰花","卷心菜","豆角",
+        "豆腐","豆浆","奶茶","油炸食品","烧烤","辣椒","碳酸饮料"
+    ]
+};
 
-    const box = document.getElementById("resultBox");
-    box.classList.remove("hidden");
-    box.innerHTML = `<p class="loading text-center text-gray-500 text-lg">分析中...</p >`;
+function searchFood(){
+    let key = document.getElementById("foodName").value.trim()
+    if(!key){alert("请输入食物名称");return}
+    let res = document.getElementById("resultBox")
+    res.classList.remove("hidden")
 
-    const prompt = `你是肠胃胀气饮食专家，分析【${food}】
-请严格按以下格式回复，保持精简：
-1.胀气等级：安全/少量慎食/严禁胀气
-2.消化难度：简单/一般/困难
-3.食用建议
-4.简短提醒`;
+    let isGood = foodData.good.some(v=>key.includes(v))
+    let isNormal = foodData.normal.some(v=>key.includes(v))
+    let isAvoid = foodData.avoid.some(v=>key.includes(v))
 
-    try {
-        const res = await fetch(`https://api.52vmy.cn/api/wen/chat?msg=${encodeURIComponent(prompt)}`);
-        const data = await res.json();
-        const text = data.text.replace(/\n/g, "<br>");
-        box.innerHTML = `<div class="text-gray-700 text-base leading-relaxed">${text}</div>`;
-    } catch (e) {
-        box.innerHTML = `<p class="text-red-500 text-center">接口临时繁忙，请稍后再试</p >`;
+    if(isGood){
+        res.innerHTML = `
+        <h3 class="text-safe font-bold text-lg"><i class="fa-solid fa-check mr-2"></i>适合常吃 · 养胃佳品</h3>
+        <p class="text-gray-600 mt-2 text-sm">清淡易消化，早晚都能吃，对肠胃十分友好。</p >
+        `
+    }else if(isNormal){
+        res.innerHTML = `
+        <h3 class="text-warn font-bold text-lg"><i class="fa-solid fa-circle-exclamation mr-2"></i>适量食用 · 不宜多吃</h3>
+        <p class="text-gray-600 mt-2 text-sm">建议仅午餐少量食用，吃多容易腹胀不适。</p >
+        `
+    }else if(isAvoid){
+        res.innerHTML = `
+        <h3 class="text-bad font-bold text-lg"><i class="fa-solid fa-xmark mr-2"></i>尽量少吃 · 容易胀气</h3>
+        <p class="text-gray-600 mt-2 text-sm">产气油腻较重，肠胃虚弱期间建议忌口。</p >
+        `
+    }else{
+        res.innerHTML = `
+        <h3 class="text-gray-500 font-bold text-lg">暂无收录食材</h3>
+        <p class="text-gray-600 mt-2 text-sm">建议少量尝试，优先放在午餐食用哦。</p >
+        `
     }
 }
 </script>
