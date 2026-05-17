@@ -19,13 +19,8 @@
             background:rgba(255,255,255,0.88);
             backdrop-filter:blur(6px);
         }
-        .loading{
-            animation:fade 1.2s infinite;
-        }
-        @keyframes fade{
-            0%,100%{opacity:0.4;}
-            50%{opacity:1;}
-        }
+        .loading{animation:fade 1.2s infinite;}
+        @keyframes fade{0%,100%{opacity:0.4;}50%{opacity:1;}}
     </style>
 </head>
 <body class="p-5 min-h-screen">
@@ -53,75 +48,18 @@
     </div>
 <script>
 const foodData={
-good:[
-"白米饭","软米饭","糙米饭","黑米饭","杂粮饭","藜麦饭","玉米饭","南瓜饭",
-"大米","小米","黑米","燕麦米","薏米","红豆","绿豆","黑豆","芸豆","芡实","莲子","百合",
-"小米粥","大米粥","黑米粥","燕麦粥","南瓜粥","山药粥","百合粥","莲子粥","青菜粥","瘦肉粥","八宝粥","地瓜粥",
-"清汤面","阳春面","素面","龙须面","挂面","荞麦面","全麦面","乌冬面","河粉","米粉","米线",
-"白馒头","花卷","玉米馒头","红糖馒头","奶香馒头","白面饼","软面饼","蒸糕","发糕","米糕",
-"蒸山药","蒸南瓜","蒸红薯","蒸芋头","蒸土豆","蒸莲藕","水煮玉米","紫薯",
-"生菜","油麦菜","上海青","小白菜","娃娃菜","菜心","芥蓝","茼蒿","空心菜","菠菜","木耳菜",
-"冬瓜","丝瓜","节瓜","西葫芦","白萝卜","青萝卜","胡萝卜",
-"平菇","香菇","金针菇","杏鲍菇","蟹味菇","白玉菇","海鲜菇","茶树菇","竹荪",
-"木耳","银耳","海带","裙带菜",
-"水煮蛋","蒸蛋羹","鹌鹑蛋","鸽子蛋",
-"鸡胸肉","猪瘦肉","猪里脊","牛腱子肉","鲈鱼","草鱼","龙利鱼","巴沙鱼","鳕鱼","黄花鱼","基围虾","青虾",
-"纯牛奶","常温酸奶","羊奶","燕麦奶","原味椰乳",
-"苹果","雪梨","白心火龙果","木瓜","圣女果","枇杷",
-"紫菜蛋花汤","番茄鸡蛋汤","冬瓜虾皮汤","青菜豆腐汤","菌菇鲜汤","鲫鱼汤",
-"清炒娃娃菜","蒜蓉油麦菜","白灼生菜","清炒茼蒿","清炒藕片",
-"清炒西葫芦","清炒芥蓝","清炒空心菜","白灼菜心"
-],
-normal:[
-"刀削面","拉面","烩面","葱油饼","手抓饼","玉米饼","南瓜饼","紫薯饼",
-"袁记云饺","鲜肉饺","玉米饺","荠菜饺","虾仁饺","蔬菜饺","水饺","蒸饺","馄饨","云吞","烧麦","春卷",
-"麦当劳板烧鸡腿堡","麦香鸡","双层吉士堡","香芋派","菠萝派","麦乐鸡",
-"肯德基原味鸡","奥尔良烤翅","土豆泥","玉米杯","老北京鸡肉卷","劲脆鸡腿堡","蛋挞",
-"超意兴把子肉","四喜丸子","木须肉","清炒时蔬","玉米炖排骨","鸡蛋羹",
-"番茄炒蛋","西红柿炒鸡蛋","黄瓜炒鸡蛋","韭黄炒蛋","西葫芦炒蛋",
-"茄子","黄瓜","西红柿","豇豆","四季豆","荷兰豆","菜花","西蓝花",
-"芹菜","莴笋","茭白","马蹄","芦笋","秋葵",
-"卤蛋","盐焗蛋","去皮鸡腿肉","去皮鸭肉","鱼肉肠",
-"土豆丝盖饭","香菇滑鸡饭","清淡咖喱饭","少油蛋炒饭",
-"原味花生","腰果","杏仁","巴旦木","核桃","开心果","葡萄干","芒果干",
-"AD钙奶","旺仔牛奶","常温果汁","温蜂蜜水","香蕉","橙子","橘子","柚子",
-"手撕面包","奶香吐司","原味华夫饼","低脂鸡胸肉肠","风干鸡胸条",
-"冻干草莓","冻干榴莲","果蔬脆","香菇脆","奶皮酥","红枣奶芙",
-"每日坚果","坚果燕麦棒","桂花糕","黑芝麻糕","全麦杂粮糕",
-"清汤关东煮","萝卜串","海带结","清淡魔芋结","清汤麻辣烫",
-"土豆炖豆角","家常豆腐","清炒木耳","芹菜炒鸡蛋","丝瓜炒蛋",
-"萝卜炖排骨","冬瓜炖肉","清蒸鱼","清炖鸡汤","清炖老鸭汤",
-"宫保鸡丁","糖醋里脊","红烧茄子","青椒土豆丝","青椒肉丝",
-"回锅肉","梅菜扣肉","红烧肉","红烧排骨",
-"蒜苔炒肉","木耳炒肉","莴笋炒肉","菜花炒肉","芹菜炒肉丝",
-"韭菜炒鸡蛋","洋葱炒肉","大葱炒鸡蛋","青椒炒蛋"
-],
-avoid:[
-"板面","牛肉板面","羊肉板面","朱家小馆","酸菜肉燥面","重庆小面","火鸡面","酸辣粉","螺蛳粉",
-"麻辣小面","肥肠粉","担担面","宜宾燃面","凉面重辣","麻辣烫","冒菜","麻辣香锅",
-"冷锅串串","钵钵鸡","夫妻肺片","爆炒肥肠","红烧肥肉","重油黄焖鸡","瓦香鸡",
-"大盘鸡","辣椒炒肉","剁椒鱼头","香辣虾","干锅菜","十三香小龙虾",
-"红烧鸡块","啤酒鸭","小炒黄牛肉","蒜香排骨","糖醋鱼",
-"粉蒸肉","荷叶粉蒸肉","水煮肉片","水煮牛肉","番茄炖牛腩",
-"红烧大肠","爆炒腰花","卤肥肠","卤猪头肉","盐水鸭","酱鸭",
-"油焖茄子","鱼香茄子","凉拌三丝","凉拌木耳","凉拌海带丝",
-"酸辣土豆丝","干煸土豆条","手撕包菜","酸辣包菜","酸辣豆芽",
-"干煸豆角","腌萝卜","腌黄瓜","腌蒜苔","剁椒咸菜","皮蛋","松花蛋",
-"爆炒花甲","香辣田螺","椒盐大虾","韭菜盒子","鸡蛋灌饼",
-"炸鸡","炸鸡腿","鸡米花","油炸汉堡","炸串","烤肠","烧烤","盐酥鸡",
-"薯片","虾条","八爪烧","锅巴","干脆面","辣条","魔芋爽","素毛肚",
-"卤鸡爪","泡椒凤爪","鸭脖子","麻辣牛肉","无骨鸡爪","冷吃兔",
-"奶茶","冰镇饮品","碳酸饮料","韭菜","洋葱","豆制品","毛豆","糯米饭"
-]
+good:["白米饭","软米饭","小米粥","大米粥","清汤面","白馒头","蒸山药","生菜","冬瓜","水煮蛋","鸡胸肉","纯牛奶","苹果","番茄鸡蛋汤","清炒时蔬"],
+normal:["番茄炒蛋","西红柿炒鸡蛋","家常豆腐","土豆丝","清蒸鱼","清炖鸡汤","普通面包","常温酸奶","香蕉"],
+avoid:["烤肉","炸鸡","烧烤","火锅","螺蛳粉","酸辣粉","辣条","冰镇饮料","韭菜","洋葱","重油重辣菜品"]
 };
 
 function localRuleTip(foodName){
     let txt = foodName.toLowerCase();
-    if(/冰|凉|冻|雪糕|冷饮/.test(txt)) return '❌ 生冷食物，刺激肠胃容易胀气，肠胃虚弱尽量少吃';
-    if(/辣|麻辣|香辣|剁椒/.test(txt)) return '❌ 辛辣刺激，伤胃易胀气，恢复期忌口';
-    if(/炸|煎|烧烤|油焖/.test(txt)) return '❌ 高油难消化，极易腹胀，不建议多吃';
-    if(/粥|蒸|清汤|白灼|水煮/.test(txt)) return '✅ 清淡好消化，温和养胃，全天都能吃';
-    return '⚠️ 普通日常食材，建议中午适量食用，做法清淡少油更护肠胃';
+    if(/冰|冻|冷饮/.test(txt)) return '❌ 生冷食物，极易引发肠胃胀气，肠胃弱尽量不吃';
+    if(/辣|麻辣|香辣/.test(txt)) return '❌ 辛辣刺激食物，容易刺激胃黏膜，诱发胀气不适';
+    if(/炸|烤|煎|烧烤|烤肉/.test(txt)) return '❌ 高油高脂难消化，进食后很容易腹胀胀气';
+    if(/粥|蒸|清汤|水煮/.test(txt)) return '✅ 清淡易消化，温和养胃，几乎不会产生胀气';
+    return '';
 }
 
 async function checkFood(){
@@ -135,29 +73,28 @@ async function checkFood(){
     let no = foodData.avoid.some(v=>food.includes(v));
 
     if(ok){
-        box.innerHTML=`<h3 class="text-safe font-bold text-lg"><i class="fa-solid fa-check mr-2"></i>✅ 养胃优选 全天可吃</h3><p class="text-gray-600 mt-2 text-sm">温和清淡好消化，几乎不胀气，三餐放心吃。</p>`;
+        box.innerHTML=`<h3 class="text-safe font-bold text-lg"><i class="fa-solid fa-check mr-2"></i>✅ 养胃优选 不易胀气</h3><p class="text-gray-600 mt-2 text-sm">清淡好消化，温和护肠胃，全天放心吃。</p>`;
         return;
     }
     if(mid){
-        box.innerHTML=`<h3 class="text-warn font-bold text-lg"><i class="fa-solid fa-circle-exclamation mr-2"></i>⚠️ 适量食用 建议午餐吃</h3><p class="text-gray-600 mt-2 text-sm">消化中等，肠胃弱少吃，中午吃最合适。</p>`;
+        box.innerHTML=`<h3 class="text-warn font-bold text-lg"><i class="fa-solid fa-circle-exclamation mr-2"></i>⚠️ 少量食用 轻微产气</h3><p class="text-gray-600 mt-2 text-sm">适量吃没问题，尽量放在中午食用最佳。</p>`;
         return;
     }
     if(no){
-        box.innerHTML=`<h3 class="text-bad font-bold text-lg"><i class="fa-solid fa-xmark mr-2"></i>❌ 易胀气 尽量忌口</h3><p class="text-gray-600 mt-2 text-sm">重油重辣易产气，胀气期间少吃，不舒服及时舒缓。</p>`;
+        box.innerHTML=`<h3 class="text-bad font-bold text-lg"><i class="fa-solid fa-xmark mr-2"></i>❌ 容易胀气 肠胃弱少吃</h3><p class="text-gray-600 mt-2 text-sm">油脂/刺激性强，很容易腹胀，胀气期尽量忌口。</p>`;
         return;
     }
 
-    box.innerHTML=`<p class="loading text-center text-gray-500">🤖 AI智能分析中...</p>`;
-    let res = await getMainAI(food);
+    box.innerHTML=`<p class="loading text-center text-gray-500">🤖 DeepSeek AI 精准判断胀气属性...</p>`;
+    let res = await getAI(food);
     if(!res) res = localRuleTip(food);
-
-    box.innerHTML=`<h3 class="text-mainGreen font-bold text-lg mb-2"><i class="fa-solid fa-robot mr-2"></i>AI饮食分析</h3><p class="text-gray-600 text-sm">${res}</p>`;
+    box.innerHTML=`<h3 class="text-mainGreen font-bold text-lg mb-2"><i class="fa-solid fa-robot mr-2"></i>AI胀气判定结果</h3><p class="text-gray-600 text-sm">${res}</p>`;
 }
 
-async function getMainAI(name){
-    let prompt=`分析${name}是否容易胀气、消化难度、最佳食用时间、养胃食用建议，简短清晰`;
+async function getAI(name){
+    let prompt=`直接精准回答：${name}是不是容易胀气的食物？肠胃虚弱能不能吃？简短直白说明即可`;
     try{
-        let ctrl = new AbortController();
+        let ctrl=new AbortController();
         setTimeout(()=>ctrl.abort(),5000);
         let res=await fetch("https://api.deepseek.com/v1/chat/completions",{
             method:"POST",
@@ -165,7 +102,7 @@ async function getMainAI(name){
                 "Content-Type":"application/json",
                 "Authorization":"Bearer sk-03f94a5227184c30a9baf7bcea7e34cb"
             },
-            body:JSON.stringify({model:"deepseek-chat",messages:[{"role":"user","content":prompt}],temperature:0.2}),
+            body:JSON.stringify({model:"deepseek-chat",messages:[{"role":"user","content":prompt}],temperature:0.1}),
             signal:ctrl.signal
         });
         let d=await res.json();
