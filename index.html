@@ -2,33 +2,29 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>养胃饮食小助手</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        mainGreen: '#2E9E72',
-                        safe: '#2E9E72',
-                        warn: '#E6A23C',
-                        bad: '#E53E3E',
-                    }
-                }
-            }
-        }
+        tailwind.config={theme:{extend:{colors:{mainGreen:'#2E9E72',safe:'#2E9E72',warn:'#E6A23C',bad:'#E53E3E'}}}}
     </script>
     <style>
         body{
-            background: #f5fbf8 url(https://img0.baidu.com/it/u=1817352239,2110202039&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500) center/cover no-repeat fixed;
-            background-blend-mode: overlay;
-            background-color: #f5fbf8;
+            background:#f5fbf8 url(https://img0.baidu.com/it/u=1817352239,2110202039&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500) center/cover no-repeat fixed;
+            background-blend-mode:overlay;
+            background-color:#f5fbf8;
         }
         .soft-card{
-            background: rgba(255,255,255,0.88);
-            backdrop-filter: blur(6px);
+            background:rgba(255,255,255,0.88);
+            backdrop-filter:blur(6px);
+        }
+        .loading{
+            animation:fade 1.2s infinite;
+        }
+        @keyframes fade{
+            0%,100%{opacity:0.4;}
+            50%{opacity:1;}
         }
     </style>
 </head>
@@ -37,129 +33,153 @@
         <div class="text-center mt-4 mb-8">
             <i class="fa-solid fa-seedling text-mainGreen text-3xl"></i>
             <h2 class="text-2xl font-bold text-gray-700 mt-2">养胃饮食小助手</h2>
-            <p class="text-gray-500 text-sm mt-1">大学生日常饮食·零食外卖全覆盖</p >
+            <p class="text-gray-500 text-sm mt-1">本地极速查询+AI全能智能判断</p >
         </div>
-
         <div class="soft-card rounded-2xl p-5 shadow-md">
-            <input id="foodName" class="w-full p-3 rounded-xl border border-green-100 outline-none text-base" placeholder="输入外卖/食堂菜/零食饮品">
-            <button onclick="checkFood()" class="w-full mt-4 bg-mainGreen text-white py-3 rounded-xl font-medium">
-                立即查询
-            </button>
+            <input id="foodName" class="w-full p-3 rounded-xl border border-green-100 outline-none text-base" placeholder="三餐饭菜/超市食材/零食饮品全都能查">
+            <button onclick="checkFood()" class="w-full mt-4 bg-mainGreen text-white py-3 rounded-xl font-medium">立即查询</button>
         </div>
-
         <div id="resultBox" class="soft-card rounded-2xl p-5 mt-5 hidden"></div>
-
         <div class="soft-card rounded-2xl p-5 mt-6 shadow-md">
-            <h3 class="font-bold text-gray-700 text-lg mb-3">
-                <i class="fa-solid fa-hand-holding-heart text-mainGreen mr-2"></i>胀气快速缓解方法
-            </h3>
+            <h3 class="font-bold text-gray-700 text-lg mb-3"><i class="fa-solid fa-hand-holding-heart text-mainGreen mr-2"></i>胀气快速缓解方法</h3>
             <ul class="text-sm text-gray-600 space-y-2">
                 <li>✅ 饭后慢走15分钟，顺时针轻柔按摩腹部排气</li>
                 <li>✅ 饮用温热水、陈皮水、大麦茶促进肠胃蠕动</li>
                 <li>✅ 平躺屈膝放松腹部，简单拉伸舒缓腹胀</li>
-                <li>✅ 胀气期间避开生冷、豆类、辛辣、重油食物</li>
+                <li>✅ 胀气期间避开生冷、豆类、辛辣、重油重盐食物</li>
             </ul>
         </div>
-
-        <p class="text-center text-gray-500 text-xs mt-8">🌿 清淡饮食 · 少食多餐 · 温和养脾胃</p >
+        <p class="text-center text-gray-500 text-xs mt-8">🌿 清淡饮食 少食多餐 温和养脾胃</p >
     </div>
-
 <script>
-const foodData = {
-    good: [
-        "白米饭","软米饭","小米粥","大米粥","南瓜粥","山药粥","青菜粥","蔬菜粥","燕麦粥","清淡八宝粥",
-        "清汤面","阳春面","素面","挂面","鸡蛋面","龙须面","清汤刀削面","清汤乌冬面",
-        "馒头","花卷","白面包","软面饼","奶香馒头","玉米馒头",
-        "蒸山药","蒸南瓜","蒸土豆","蒸红薯","水煮玉米",
-        "水煮蛋","蒸蛋羹","蛋花汤","丝瓜汤","冬瓜汤","海带汤","紫菜蛋花汤",
-        "鸡胸肉","清炖鸡肉","清炖排骨","瘦猪肉","猪里脊","清蒸鱼","鲈鱼","鲫鱼","龙利鱼","白灼虾",
-        "生菜","油麦菜","小白菜","上海青","娃娃菜","冬瓜","丝瓜","胡萝卜","清煮白萝卜",
-        "菠菜","清炒藕片","清汤菌菇","银耳","莲子","西兰花","菜花","西葫芦","白灼菜心",
-        "常温纯牛奶","原味常温酸奶","燕麦牛奶","豆奶","杏仁露",
-        "苹果","梨","橙子","猕猴桃","香蕉","圣女果","草莓","蓝莓","桃子","李子",
-        "原味吐司","软面包","手撕面包","奶香面包","原味米糕"
-    ],
-    normal: [
-        "袁记云饺","鲜肉饺","蔬菜饺","荠菜饺","玉米饺","虾仁饺","馄饨","云吞","清汤水饺","少量煎饺","少量锅贴",
-        "麦当劳板烧堡","麦香鸡","双层吉士","无骨鸡柳","上校鸡块","香芋派","菠萝派",
-        "肯德基原味鸡","奥尔良烤翅","土豆泥","玉米杯","老北京鸡肉卷","劲脆鸡腿堡",
-        "汉堡王嫩烤鸡腿堡","不辣皇堡","华莱士不辣汉堡","德克士不辣鸡肉堡",
-        "清淡卤肉饭","猪肘饭","滑蛋饭","番茄炒蛋盖饭","土豆丝盖饭","香菇滑鸡饭",
-        "清淡日式咖喱饭","清淡肥牛饭","照烧鸡排饭","少辣黑椒牛柳饭","少油蛋炒饭","清淡扬州炒饭",
-        "杂粮饭","糙米便当",
-        "清汤兰州拉面","少辣红烧牛肉面","番茄肥牛面","微辣藤椒鸡丝面",
-        "少辣杂酱面","少辣鸡杂面","少辣肥肠面","微辣老坛酸菜面",
-        "清淡花甲粉","清淡渔粉","少量微辣螺蛳粉",
-        "番茄炒蛋","清炒土豆丝","清炒西葫芦","清炒茼蒿","凉拌少辣黄瓜",
-        "凉拌番茄","清炒虾仁","清炖牛腩","食堂素菜拼盘","蒜蓉油麦菜",
-        "青菜包","香菇包","茄子包","青椒鸡腿包","豆沙包","奶黄包","紫薯包",
-        "清淡烧麦","少量春卷","蛋挞","原味泡芙",
-        "日式小圆饼","海盐饼干","苏打饼干","海苔饼干","咸口薄脆",
-        "芝士蛋酥","板栗饼","厚切吐司","牛奶威化","蛋黄酥","鲜花饼",
-        "原味花生","腰果","杏仁","巴旦木","核桃","少量开心果",
-        "葡萄干","芒果干","草莓干","黄桃干","杏干","冻干水果",
-        "原味猪肉脯","手撕鱿鱼丝","烤鱼片","不辣鱼豆腐",
-        "卤蛋","鹌鹑蛋","盐焗蛋","原味牛肉干","沙嗲牛肉粒","蜜汁鱼丝",
-        "AD钙奶","旺仔牛奶","常温果汁","蜂蜜水","椰汁","银耳羹",
-        "少量果冻","棉花糖","奶糖","牛轧糖"
-    ],
-    avoid: [
-        "牛肉板面","羊肉板面","朱家小馆","酸菜肉燥面","重庆小面","火鸡面","酸辣粉",
-        "特辣螺蛳粉","麻辣小面","爆辣牛肉面","藤椒重辣面","肥肠粉","担担面","宜宾燃面",
-        "麻辣烫","冒菜","麻辣拌","麻辣香锅","老式东北麻辣烫","牛油火锅",
-        "麻辣涮串","冷锅串串","钵钵鸡","夫妻肺片",
-        "回锅肉","梅菜扣肉","水煮鱼","毛血旺","辣子鸡","爆炒肥肠","红烧肥肉",
-        "重油黄焖鸡","瓦香鸡","多油地三鲜","大盘鸡","辣椒炒肉","麻婆豆腐",
-        "鱼香肉丝","重辣宫保鸡丁","剁椒鱼头","香辣虾","干锅牛蛙","十三香小龙虾",
-        "炸鸡","炸鸡腿","鸡米花","油炸汉堡","炸串","脆皮鸡","盐酥鸡",
-        "炸鱿鱼","炸里脊","炸蘑菇","烤肠","烧烤全品类",
-        "乐事全口味薯片","上好佳虾条","洋葱圈","八爪烧","锅巴","干脆面",
-        "咪咪虾条","一根葱","玉米片","薯塔","土豆棒","重口米饼",
-        "卤鸡爪","泡椒凤爪","卤鸭翅","鸭脖子","卤藕","卤海带","卤毛豆",
-        "鸡脚筋","鸭舌","麻辣牛肉","麻辣小鱼","鱿鱼须","麻辣王子",
-        "辣条","辣片","魔芋爽","素毛肚","爆辣面筋","大刀肉","火爆鸡筋",
-        "牛板筋","手撕素肉","泡椒竹笋","山椒笋尖",
-        "冰奶茶","冰果茶","冰镇酸奶","碳酸饮料","可乐","雪碧","冰咖啡",
-        "冰红茶","功能饮料","啤酒","低度果酒",
-        "奶油面包","夹心甜面包","肉松面包","蛋黄派","巧克力派",
-        "夹心曲奇","牛角包","奶油蛋糕","慕斯甜品",
-        "韭菜","韭菜盒子","洋葱","大蒜","大葱","蒜苗",
-        "黄豆芽","绿豆芽","老豆腐","嫩豆腐","豆浆","腐竹","豆干","毛豆",
-        "粽子","汤圆","年糕","糯米鸡","糯米饭","麻糍","驴打滚",
-        "桶装泡面","自热火锅","自热米饭","速食重辣夜宵"
-    ]
+// 超级海量本地食材总库
+const foodData={
+good:[
+"白米饭","软米饭","糙米饭","黑米饭","杂粮饭","藜麦饭","玉米饭","南瓜饭",
+"大米","小米","黑米","燕麦米","薏米","红豆","绿豆","黑豆","芸豆","芡实","莲子","百合",
+"小米粥","大米粥","黑米粥","燕麦粥","南瓜粥","山药粥","百合粥","莲子粥","青菜粥","瘦肉粥","八宝粥","地瓜粥",
+"清汤面","阳春面","素面","龙须面","挂面","荞麦面","全麦面","乌冬面","河粉","米粉","米线",
+"白馒头","花卷","玉米馒头","红糖馒头","奶香馒头","白面饼","软面饼","蒸糕","发糕","米糕",
+"蒸山药","蒸南瓜","蒸红薯","蒸芋头","蒸土豆","蒸莲藕","水煮玉米","紫薯",
+"生菜","油麦菜","上海青","小白菜","娃娃菜","菜心","芥蓝","茼蒿","空心菜","菠菜","木耳菜",
+"冬瓜","丝瓜","节瓜","西葫芦","白萝卜","青萝卜","胡萝卜",
+"平菇","香菇","金针菇","杏鲍菇","蟹味菇","白玉菇","海鲜菇","茶树菇","竹荪",
+"木耳","银耳","海带","裙带菜",
+"水煮蛋","蒸蛋羹","鹌鹑蛋","鸽子蛋",
+"鸡胸肉","猪瘦肉","猪里脊","牛腱子肉","鲈鱼","草鱼","龙利鱼","巴沙鱼","鳕鱼","黄花鱼","基围虾","青虾",
+"纯牛奶","常温酸奶","羊奶","燕麦奶","原味椰乳",
+"苹果","雪梨","白心火龙果","木瓜","圣女果","枇杷",
+"紫菜蛋花汤","番茄鸡蛋汤","冬瓜虾皮汤","青菜豆腐汤","菌菇鲜汤","鲫鱼汤",
+"清炒娃娃菜","蒜蓉油麦菜","白灼生菜","清炒茼蒿","清炒藕片"
+],
+normal:[
+"刀削面","拉面","烩面","葱油饼","手抓饼","玉米饼","南瓜饼","紫薯饼",
+"袁记云饺","鲜肉饺","玉米饺","荠菜饺","虾仁饺","蔬菜饺","水饺","蒸饺","馄饨","云吞","烧麦","春卷",
+"麦当劳板烧鸡腿堡","麦香鸡","双层吉士堡","香芋派","菠萝派","麦乐鸡",
+"肯德基原味鸡","奥尔良烤翅","土豆泥","玉米杯","老北京鸡肉卷","劲脆鸡腿堡","蛋挞",
+"超意兴把子肉","四喜丸子","木须肉","清炒时蔬","玉米炖排骨","鸡蛋羹",
+"番茄炒蛋","茄子","黄瓜","西红柿","豇豆","四季豆","荷兰豆","菜花",
+"芹菜","莴笋","韭黄","茭白","马蹄","芦笋","秋葵",
+"卤蛋","盐焗蛋","去皮鸡腿肉","去皮鸭肉","鱼肉肠",
+"土豆丝盖饭","香菇滑鸡饭","清淡咖喱饭","少油蛋炒饭",
+"原味花生","腰果","杏仁","巴旦木","核桃","开心果","葡萄干","芒果干",
+"AD钙奶","旺仔牛奶","常温果汁","温蜂蜜水","香蕉","橙子","橘子","柚子",
+"手撕面包","奶香吐司","原味华夫饼","低脂鸡胸肉肠","风干鸡胸条",
+"冻干草莓","冻干榴莲","果蔬脆","香菇脆","奶皮酥","红枣奶芙",
+"每日坚果","坚果燕麦棒","桂花糕","黑芝麻糕","全麦杂粮糕",
+"清汤关东煮","萝卜串","海带结","清淡魔芋结","清汤麻辣烫"
+],
+avoid:[
+"板面","牛肉板面","羊肉板面","朱家小馆","酸菜肉燥面","重庆小面","火鸡面","酸辣粉","螺蛳粉",
+"麻辣小面","肥肠粉","担担面","宜宾燃面","凉面","麻辣拌","冒菜","麻辣香锅",
+"夫妻肺片","回锅肉","梅菜扣肉","水煮鱼","毛血旺","辣子鸡","爆炒肥肠","红烧肥肉",
+"重油黄焖鸡","瓦香鸡","地三鲜","大盘鸡","辣椒炒肉","麻婆豆腐","鱼香肉丝","剁椒鱼头",
+"香辣虾","干锅菜","十三香小龙虾","红烧鸡块","啤酒鸭","小炒黄牛肉",
+"蒜苔炒肉","豆角炒肉","洋葱炒肉片","红烧大肠","爆炒腰花","酱鸭","卤鸡",
+"油焖茄子","鱼香茄子","凉拌三丝","酸辣土豆丝","干煸土豆条","手撕包菜",
+"酸辣豆芽","干煸豆角","腌萝卜","腌蒜苔","剁椒咸菜","皮蛋","松花蛋",
+"爆炒花甲","香辣田螺","椒盐大虾","煎饺","韭菜盒子","鸡蛋灌饼",
+"炸鸡","炸鸡腿","鸡米花","油炸汉堡","炸串","烤肠","烧烤","盐酥鸡",
+"乐事薯片","上好佳虾条","洋葱圈","八爪烧","锅巴","干脆面","咪咪虾条","玉米片",
+"卤鸡爪","泡椒凤爪","卤鸭翅","鸭脖子","鸡脚筋","鸭舌","麻辣牛肉","麻辣小鱼",
+"鱿鱼须","辣条","辣片","魔芋爽","素毛肚","大刀肉","火爆鸡筋","牛板筋",
+"泡椒竹笋","无骨鸡爪","冷吃兔","麻辣兔头","泡椒猪皮","卤肥肠",
+"熔岩巧克力","流心蛋黄酥","芋泥麻薯","雪媚娘","半熟芝士","巴斯克蛋糕",
+"奶茶","冰果茶","冰镇酸奶","可乐","雪碧","气泡水","冰红茶","功能饮料","啤酒",
+"韭菜","洋葱","大蒜","大葱","各类豆制品","黄豆芽","绿豆芽","毛豆","糯米饭"
+]
 };
 
+// 主查询函数
 function checkFood(){
-    let food = document.getElementById("foodName").value.trim()
-    if(!food){alert("请输入食物名称");return}
-    let box = document.getElementById("resultBox")
-    box.classList.remove("hidden")
+    let food = document.getElementById("foodName").value.trim();
+    if(!food){alert("请输入食物名称");return;}
+    let box = document.getElementById("resultBox");
+    box.classList.remove("hidden");
 
-    let isGood = foodData.good.some(v=>food.includes(v))
-    let isNormal = foodData.normal.some(v=>food.includes(v))
-    let isAvoid = foodData.avoid.some(v=>food.includes(v))
+    // 优先匹配本地海量数据库
+    let isGreen = foodData.good.some(item=>food.includes(item));
+    let isYellow = foodData.normal.some(item=>food.includes(item));
+    let isRed = foodData.avoid.some(item=>food.includes(item));
 
-    if(isGood){
+    if(isGreen){
         box.innerHTML = `
         <h3 class="text-safe font-bold text-lg"><i class="fa-solid fa-check mr-2"></i>✅ 养胃优选 全天可吃</h3>
-        <p class="text-gray-600 mt-2 text-sm">性质温和极易消化，几乎不产生胀气，早中晚三餐都适合食用。</p >
-        `
-    }else if(isNormal){
+        <p class="text-gray-600 mt-2 text-sm">食材性质温和，清淡易消化，不易产生胀气，早中晚三餐都可以放心食用。</p >
+        `;
+        return;
+    }
+    if(isYellow){
         box.innerHTML = `
-        <h3 class="text-warn font-bold text-lg"><i class="fa-solid fa-circle-exclamation mr-2"></i>⚠️ 适量食用 建议午餐吃</h3>
-        <p class="text-gray-600 mt-2 text-sm">肠胃偏弱尽量少吃，仅放在中午食用最佳，吃完多喝温水散步帮助消化。</p >
-        `
-    }else if(isAvoid){
+        <h3 class="text-warn font-bold text-lg"><i class="fa-solid fa-circle-exclamation mr-2"></i>⚠️ 适量食用 建议午餐食用</h3>
+        <p class="text-gray-600 mt-2 text-sm">肠胃偏弱人群尽量少吃，最佳食用时间为中午，吃完多喝温水、散步促进消化。</p >
+        `;
+        return;
+    }
+    if(isRed){
         box.innerHTML = `
-        <h3 class="text-bad font-bold text-lg"><i class="fa-solid fa-xmark mr-2"></i>❌ 容易胀气 尽量忌口</h3>
-        <p class="text-gray-600 mt-2 text-sm">重油重辣易产气，胀气期间严格少吃，不慎食用可参考下方方法快速缓解不适。</p >
-        `
-    }else{
-        box.innerHTML = `
-        <h3 class="text-gray-700 font-bold text-lg"><i class="fa-solid fa-leaf mr-2"></i>暂无收录食材</h3>
-        <p class="text-gray-600 mt-2 text-sm">初次食用建议少量尝试，优先安排在午餐，食用后观察自身肠胃状态即可。</p >
-        `
+        <h3 class="text-bad font-bold text-lg"><i class="fa-solid fa-xmark mr-2"></i>❌ 极易胀气 胀气期尽量忌口</h3>
+        <p class="text-gray-600 mt-2 text-sm">重油重辣易产气，容易引发腹胀腹痛，肠胃不适期间严格少吃，误食可参照上方方法快速缓解。</p >
+        `;
+        return;
+    }
+
+    // 本地无匹配 直接调用稳定AI兜底
+    box.innerHTML = `<p class="loading text-center text-gray-500">🤖 AI智能深度分析食材属性中...</p >`;
+    getAIFoodInfo(food,box);
+}
+
+// 稳定AI食材解析接口
+async function getAIFoodInfo(name,dom){
+    const prompt = `你是专业养胃饮食健康顾问，精准分析【${name}】这款食物，严格精简回答：
+1. 判断是否容易造成肠胃胀气
+2. 肠胃消化难易程度
+3. 最佳食用时间段
+4. 肠胃虚弱人群食用建议
+5. 不慎食用后的舒缓小办法
+语言简洁通俗，贴合大学生日常饮食，不要多余废话`;
+
+    try{
+        const res = await fetch(`https://api.yeai.com/v1/chat/completions`,{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({
+                model:"gpt-3.5-turbo",
+                messages:[{"role":"user","content":prompt}],
+                temperature:0.3
+            })
+        });
+        const data = await res.json();
+        let aiText = data.choices[0].message.content;
+        dom.innerHTML = `
+        <h3 class="text-mainGreen font-bold text-lg mb-2"><i class="fa-solid fa-robot mr-2"></i>AI智能饮食分析</h3>
+        <p class="text-gray-600 text-sm whitespace-pre-line">${aiText}</p >
+        `;
+    }catch(e){
+        dom.innerHTML = `
+        <h3 class="text-warn font-bold text-lg"><i class="fa-solid fa-info-circle mr-2"></i>饮食通用建议</h3>
+        <p class="text-gray-600 mt-2 text-sm">陌生食材初次少量尝试，优先安排在午餐食用，清淡做法最佳，少吃生冷辛辣，保护肠胃减少胀气。</p >
+        `;
     }
 }
 </script>
