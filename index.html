@@ -33,7 +33,7 @@
         <div class="text-center mt-4 mb-8">
             <i class="fa-solid fa-seedling text-mainGreen text-3xl"></i>
             <h2 class="text-2xl font-bold text-gray-700 mt-2">养胃饮食小助手</h2>
-            <p class="text-gray-500 text-sm mt-1">本地极速查询+AI全能智能判断</p >
+            <p class="text-gray-500 text-sm mt-1">本地极速查询+AI全能智能判断</p>
         </div>
         <div class="soft-card rounded-2xl p-5 shadow-md">
             <input id="foodName" class="w-full p-3 rounded-xl border border-green-100 outline-none text-base" placeholder="三餐饭菜/超市食材/零食饮品全都能查">
@@ -49,10 +49,9 @@
                 <li>✅ 胀气期间避开生冷、豆类、辛辣、重油重盐食物</li>
             </ul>
         </div>
-        <p class="text-center text-gray-500 text-xs mt-8">🌿 清淡饮食 少食多餐 温和养脾胃</p >
+        <p class="text-center text-gray-500 text-xs mt-8">🌿 清淡饮食 少食多餐 温和养脾胃</p>
     </div>
 <script>
-// 【超全本地库】家常菜全覆盖 + 网红零食 + 村驴全套
 const foodData={
 good:[
 "白米饭","软米饭","糙米饭","黑米饭","杂粮饭","藜麦饭","玉米饭","南瓜饭",
@@ -92,155 +91,86 @@ normal:[
 "清汤关东煮","萝卜串","海带结","清淡魔芋结","清汤麻辣烫",
 "土豆炖豆角","家常豆腐","清炒木耳","芹菜炒鸡蛋","丝瓜炒蛋",
 "萝卜炖排骨","冬瓜炖肉","清蒸鱼","清炖鸡汤","清炖老鸭汤",
-"宫保鸡丁","鱼香肉丝","糖醋里脊","红烧茄子","地三鲜","青椒土豆丝","青椒肉丝",
-"麻婆豆腐","水煮肉片","回锅肉","梅菜扣肉","红烧肉","红烧排骨",
+"宫保鸡丁","糖醋里脊","红烧茄子","青椒土豆丝","青椒肉丝",
+"回锅肉","梅菜扣肉","红烧肉","红烧排骨",
 "蒜苔炒肉","木耳炒肉","莴笋炒肉","菜花炒肉","芹菜炒肉丝",
 "韭菜炒鸡蛋","洋葱炒肉","大葱炒鸡蛋","青椒炒蛋"
 ],
 avoid:[
 "板面","牛肉板面","羊肉板面","朱家小馆","酸菜肉燥面","重庆小面","火鸡面","酸辣粉","螺蛳粉",
 "麻辣小面","肥肠粉","担担面","宜宾燃面","凉面重辣","麻辣烫","冒菜","麻辣香锅",
-"冷锅串串","钵钵鸡","夫妻肺片","回锅肉","梅菜扣肉","水煮鱼","毛血旺","辣子鸡",
-"爆炒肥肠","红烧肥肉","重油黄焖鸡","瓦香鸡","地三鲜","大盘鸡","辣椒炒肉",
-"麻婆豆腐","鱼香肉丝","剁椒鱼头","香辣虾","干锅菜","十三香小龙虾",
-"红烧鸡块","啤酒鸭","小炒黄牛肉","蒜香排骨","糖醋排骨","糖醋鱼",
+"冷锅串串","钵钵鸡","夫妻肺片","爆炒肥肠","红烧肥肉","重油黄焖鸡","瓦香鸡",
+"大盘鸡","辣椒炒肉","剁椒鱼头","香辣虾","干锅菜","十三香小龙虾",
+"红烧鸡块","啤酒鸭","小炒黄牛肉","蒜香排骨","糖醋鱼",
 "粉蒸肉","荷叶粉蒸肉","水煮肉片","水煮牛肉","番茄炖牛腩",
-"豆角炒肉","蒜苔炒肉","芹菜炒肉丝","木耳炒肉","莴笋炒肉","菜花炒肉",
-"红烧大肠","爆炒腰花","卤肥肠","卤猪头肉","盐水鸭","酱鸭","红烧鸭块",
-"油焖茄子","鱼香茄子","蒜蓉茄子","凉拌三丝","凉拌木耳","凉拌海带丝",
-"酸辣土豆丝","干煸土豆条","手撕包菜","酸辣包菜","清炒豆芽","酸辣豆芽",
-"干煸豆角","腌萝卜","腌黄瓜","腌蒜苔","腌豆角","剁椒咸菜",
-"咸蛋","皮蛋","松花蛋","爆炒花甲","香辣田螺","炒河虾",
-"椒盐大虾","炸小鱼","香酥炸鱼","韭菜盒子","菜盒子","土豆饼","韭菜饼",
-"鸡蛋灌饼","菜团子","玉米窝头","水煎包","红糖发糕",
-"砂锅豆腐","砂锅丸子","砂锅土豆粉","黄焖茄子","农家焖菜",
-"铁锅炖大鹅","农家一锅出",
-"炸鸡","炸鸡腿","鸡米花","油炸汉堡","炸串","烤肠","烧烤","盐酥鸡","脆皮鸡","炸里脊",
-"乐事薯片","上好佳虾条","洋葱圈","八爪烧","锅巴","干脆面","咪咪虾条","一根葱","玉米片","薯塔",
-"卤鸡爪","泡椒凤爪","卤鸭翅","鸭脖子","卤藕","卤毛豆","鸡脚筋","鸭舌",
-"麻辣牛肉","麻辣小鱼","鱿鱼须","辣条","辣片","魔芋爽","素毛肚","大刀肉",
-"火爆鸡筋","牛板筋","手撕素肉","泡椒竹笋","山椒笋尖",
-"无骨鸡爪","脱骨鸭掌","冷吃牛肉","冷吃兔","麻辣兔头","泡椒猪皮",
-"熔岩巧克力","流心蛋黄酥","芋泥麻薯","雪媚娘","冰皮月亮蛋糕",
-"半熟芝士","巴斯克蛋糕","提拉米苏","生巧","抹茶大福",
-"奶茶","冰果茶","冰镇酸奶","碳酸饮料","可乐","雪碧","冰红茶","功能饮料","啤酒",
-"韭菜","洋葱","大蒜","大葱","蒜苗","黄豆芽","绿豆芽","各类豆制品","毛豆","糯米饭"
+"红烧大肠","爆炒腰花","卤肥肠","卤猪头肉","盐水鸭","酱鸭",
+"油焖茄子","鱼香茄子","凉拌三丝","凉拌木耳","凉拌海带丝",
+"酸辣土豆丝","干煸土豆条","手撕包菜","酸辣包菜","酸辣豆芽",
+"干煸豆角","腌萝卜","腌黄瓜","腌蒜苔","剁椒咸菜","皮蛋","松花蛋",
+"爆炒花甲","香辣田螺","椒盐大虾","韭菜盒子","鸡蛋灌饼",
+"炸鸡","炸鸡腿","鸡米花","油炸汉堡","炸串","烤肠","烧烤","盐酥鸡",
+"薯片","虾条","八爪烧","锅巴","干脆面","辣条","魔芋爽","素毛肚",
+"卤鸡爪","泡椒凤爪","鸭脖子","麻辣牛肉","无骨鸡爪","冷吃兔",
+"奶茶","冰镇饮品","碳酸饮料","韭菜","洋葱","豆制品","毛豆","糯米饭"
 ]
 };
 
-// 本地兜底规则（AI 挂了也不会空白）
-function localRuleSuggestion(food){
-    let lower=food.toLowerCase();
-    if(/冰|冷|冻|冰镇|冰淇淋|雪糕/.test(lower)) return "❌ 生冷寒凉，易刺激肠胃、加重胀气，胀气期尽量避免。";
-    if(/辣|麻辣|香辣|剁椒|泡椒|火鸡/.test(lower)) return "❌ 辛辣刺激，易损伤胃黏膜、引发胀气与不适，肠胃弱少吃。";
-    if(/炸|煎|油焖|干锅|烧烤/.test(lower)) return "❌ 高油高脂，难消化、易产气，胀气期尽量忌口。";
-    if(/粥|蒸|煮|清汤|白灼/.test(lower)) return "✅ 清淡易消化，温和养胃，不易胀气，三餐都适合。";
-    return "⚠️ 非重口/生冷/油炸类，建议午餐少量吃，做法清淡、少油少辣，保护肠胃。";
+function localRuleTip(foodName){
+    let txt = foodName.toLowerCase();
+    if(/冰|凉|冻|雪糕|冷饮/.test(txt)) return '❌ 生冷食物，刺激肠胃容易胀气，肠胃虚弱尽量少吃';
+    if(/辣|麻辣|香辣|剁椒/.test(txt)) return '❌ 辛辣刺激，伤胃易胀气，恢复期忌口';
+    if(/炸|煎|烧烤|油焖/.test(txt)) return '❌ 高油难消化，极易腹胀，不建议多吃';
+    if(/粥|蒸|清汤|白灼|水煮/.test(txt)) return '✅ 清淡好消化，温和养胃，全天都能吃';
+    return '⚠️ 普通日常食材，建议中午适量食用，做法清淡少油更护肠胃';
 }
 
 async function checkFood(){
-    let food=document.getElementById("foodName").value.trim();
+    let food = document.getElementById("foodName").value.trim();
     if(!food){alert("请输入食物名称");return;}
-    let box=document.getElementById("resultBox");
+    let box = document.getElementById("resultBox");
     box.classList.remove("hidden");
 
-    // 1. 本地库优先
-    let isGreen=foodData.good.some(item=>food.includes(item));
-    let isYellow=foodData.normal.some(item=>food.includes(item));
-    let isRed=foodData.avoid.some(item=>food.includes(item));
+    let ok = foodData.good.some(v=>food.includes(v));
+    let mid = foodData.normal.some(v=>food.includes(v));
+    let no = foodData.avoid.some(v=>food.includes(v));
 
-    if(isGreen){
-        box.innerHTML=`
-        <h3 class="text-safe font-bold text-lg"><i class="fa-solid fa-check mr-2"></i>✅ 养胃优选 全天可吃</h3>
-        <p class="text-gray-600 mt-2 text-sm">食材性质温和，清淡易消化，不易产生胀气，早中晚三餐都可以放心食用。</p >
-        `;
+    if(ok){
+        box.innerHTML=`<h3 class="text-safe font-bold text-lg"><i class="fa-solid fa-check mr-2"></i>✅ 养胃优选 全天可吃</h3><p class="text-gray-600 mt-2 text-sm">温和清淡好消化，几乎不胀气，三餐放心吃。</p>`;
         return;
     }
-    if(isYellow){
-        box.innerHTML=`
-        <h3 class="text-warn font-bold text-lg"><i class="fa-solid fa-circle-exclamation mr-2"></i>⚠️ 适量食用 建议午餐食用</h3>
-        <p class="text-gray-600 mt-2 text-sm">肠胃偏弱人群尽量少吃，最佳食用时间为中午，吃完多喝温水、散步促进消化。</p >
-        `;
+    if(mid){
+        box.innerHTML=`<h3 class="text-warn font-bold text-lg"><i class="fa-solid fa-circle-exclamation mr-2"></i>⚠️ 适量食用 建议午餐吃</h3><p class="text-gray-600 mt-2 text-sm">消化中等，肠胃弱少吃，中午吃最合适。</p>`;
         return;
     }
-    if(isRed){
-        box.innerHTML=`
-        <h3 class="text-bad font-bold text-lg"><i class="fa-solid fa-xmark mr-2"></i>❌ 极易胀气 胀气期尽量忌口</h3>
-        <p class="text-gray-600 mt-2 text-sm">重油重辣易产气，容易引发腹胀腹痛，肠胃不适期间严格少吃，误食可参照上方方法快速缓解。</p >
-        `;
+    if(no){
+        box.innerHTML=`<h3 class="text-bad font-bold text-lg"><i class="fa-solid fa-xmark mr-2"></i>❌ 易胀气 尽量忌口</h3><p class="text-gray-600 mt-2 text-sm">重油重辣易产气，胀气期间少吃，不舒服及时舒缓。</p>`;
         return;
     }
 
-    // 2. AI 三重兜底：主接口→备用→本地规则
-    box.innerHTML=`<p class="loading text-center text-gray-500">🤖 AI智能深度分析食材属性中...</p >`;
-    let aiResult=await getAIFoodInfo(food);
-    if(!aiResult) aiResult=await getBackupAIFoodInfo(food);
-    if(!aiResult) aiResult=localRuleSuggestion(food);
+    box.innerHTML=`<p class="loading text-center text-gray-500">🤖 AI智能分析中...</p>`;
+    let res = await getMainAI(food);
+    if(!res) res = localRuleTip(food);
 
-    box.innerHTML=`
-    <h3 class="text-mainGreen font-bold text-lg mb-2"><i class="fa-solid fa-robot mr-2"></i>AI智能饮食分析</h3>
-    <p class="text-gray-600 text-sm whitespace-pre-line">${aiResult}</p >
-    `;
+    box.innerHTML=`<h3 class="text-mainGreen font-bold text-lg mb-2"><i class="fa-solid fa-robot mr-2"></i>AI饮食分析</h3><p class="text-gray-600 text-sm">${res}</p>`;
 }
 
-// 主AI接口（DeepSeek 国内稳）
-async function getAIFoodInfo(name){
-    const prompt=`你是专业养胃饮食健康顾问，精准分析【${name}】这款食物，精简回答：
-1.是否容易胀气
-2.消化难易程度
-3.最佳食用时间段
-4.肠胃虚弱人群食用建议
-5.误食胀气舒缓办法
-语言通俗简短，贴合大学生日常饮食`;
+async function getMainAI(name){
+    let prompt=`分析${name}是否容易胀气、消化难度、最佳食用时间、养胃食用建议，简短清晰`;
     try{
-        let controller=new AbortController();
-        setTimeout(()=>controller.abort(),5000); // 5秒超时
-        const res=await fetch("https://api.deepseek.com/v1/chat/completions",{
+        let ctrl = new AbortController();
+        setTimeout(()=>ctrl.abort(),5000);
+        let res=await fetch("https://api.deepseek.com/v1/chat/completions",{
             method:"POST",
             headers:{
                 "Content-Type":"application/json",
-                "Authorization":"Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" // 你自己去 DeepSeek 注册填 key
+                "Authorization":"Bearer sk-03f94a5227184c30a9baf7bcea7e34cb"
             },
-            body:JSON.stringify({
-                model:"deepseek-chat",
-                messages:[{"role":"user","content":prompt}],
-                temperature:0.3
-            }),
-            signal:controller.signal
+            body:JSON.stringify({model:"deepseek-chat",messages:[{"role":"user","content":prompt}],temperature:0.2}),
+            signal:ctrl.signal
         });
-        if(!res.ok) throw new Error("fail");
-        let data=await res.json();
-        return data.choices[0].message.content;
-    }catch(e){
-        return null;
-    }
-}
-
-// 备用AI接口（聚合平台，兜底）
-async function getBackupAIFoodInfo(name){
-    const prompt=`简要分析食物【${name}】是否胀气、消化难度、最佳食用时间、养胃建议`;
-    try{
-        let controller=new AbortController();
-        setTimeout(()=>controller.abort(),5000);
-        const res=await fetch("https://api.siliconflow.cn/v1/chat/completions",{
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":"Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" // 备用 key
-            },
-            body:JSON.stringify({
-                model:"Qwen/Qwen3-8B",
-                messages:[{"role":"user","content":prompt}],
-                temperature:0.3
-            }),
-            signal:controller.signal
-        });
-        if(!res.ok) throw new Error("fail");
-        let data=await res.json();
-        return data.choices[0].message.content;
-    }catch(e){
-        return null;
-    }
+        let d=await res.json();
+        return d.choices[0].message.content;
+    }catch(e){return null;}
 }
 </script>
 </body>
