@@ -45,7 +45,7 @@
         <div class="text-center mt-4 mb-8">
             <i class="fa-solid fa-seedling text-mainGreen text-3xl"></i>
             <h2 class="text-2xl font-bold text-gray-700 mt-2">养胃饮食小助手</h2>
-            <p class="text-gray-500 text-sm mt-1">AI智能分析 · 呵护肠胃不胀气</p >
+            <p class="text-gray-500 text-sm mt-1">呵护肠胃不胀气 · 常吃食物直接查</p >
         </div>
 
         <!-- 搜索区域 -->
@@ -106,32 +106,7 @@ function checkFood(){
         <p class="text-gray-600 mt-2 text-sm">产气油腻较重，肠胃虚弱期间建议忌口。</p >
         `
     }else{
-        // 本地没收录，尝试用AI查询
-        box.innerHTML = `<p class="loading text-center text-gray-500 text-base">🤖 AI正在分析中...</p >`
-        aiFallback(food, box)
-    }
-}
-
-// AI备用查询（本地没收录时调用）
-async function aiFallback(food, box){
-    let prompt = `你是肠胃胀气饮食专家，分析【${food}】，按格式回复：
-1.胀气等级：安全/少量慎食/严禁胀气
-2.消化难度：简单/一般/困难
-3.食用建议
-4.简短忌口提醒`
-    try{
-        let res = await fetch(`https://api.52vmy.cn/api/wen/chat?msg=${encodeURIComponent(prompt)}`)
-        let data = await res.json()
-        if(data.text){
-            let text = data.text.replace(/\n/g,"<br>")
-            box.innerHTML = `<div class="text-gray-700 text-sm leading-relaxed">${text}</div>`
-        }else{
-            box.innerHTML = `
-            <h3 class="text-gray-500 font-bold text-lg">暂无收录食材</h3>
-            <p class="text-gray-600 mt-2 text-sm">建议少量尝试，优先放在午餐食用，观察肠胃反应~</p >
-            `
-        }
-    }catch(e){
+        // 本地没收录，给通用建议
         box.innerHTML = `
         <h3 class="text-gray-500 font-bold text-lg">暂无收录食材</h3>
         <p class="text-gray-600 mt-2 text-sm">建议少量尝试，优先放在午餐食用，观察肠胃反应~</p >
